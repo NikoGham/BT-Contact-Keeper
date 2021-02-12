@@ -30,6 +30,11 @@ export default (state, action) => {
 				...state,
 				current: null
 			}
+			case UPDATE_CONTACT:
+			return {
+				...state,
+				contacts: state.contacts.map(bogey => bogey.id === action.payload.id ? action.payload : bogey )
+			}
 
 		default:
 			return state;
