@@ -56,7 +56,10 @@ const loadUser = async () => {
     type: REGISTER_SUCCESS,
     payload: res.data,
    })
-  } catch (err) {
+
+   loadUser();
+
+} catch (err) {
    dispatch({
     type: REGISTER_FAIL,
     payload: err.response.data.msg,
@@ -65,10 +68,33 @@ const loadUser = async () => {
  }
 
  // login user
- const login = () => console.log('login')
+ const login = async (formData) => {
+    const config = {
+     headers: {
+      'Content-Type': 'application/json',
+     },
+    }
+    try {
+     const res = await axios.post('/api/auth', formData, config)
+
+     dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+     })
+
+     loadUser();
+
+  } catch (err) {
+     dispatch({
+      type: LOGIN_FAIL,
+      payload: err.response.data.msg,
+     })
+    }
+   }
+
 
  // logout
- const logout = () => console.log('logout')
+ const logout = () => dispatch({ type: LOGOUT})
 
  // Clear Errors
  const clearErrors = () => dispatch({type: CLEAR_ERRORS})
@@ -84,7 +110,7 @@ const loadUser = async () => {
     error: state.error,
     register,
     loadUser,
-    login,
+    logout,
     login,
     clearErrors
    }}
